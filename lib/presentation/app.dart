@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:hw_dashboard_client/presentation/view/app_view.dart';
 
-import 'package:hw_dashboard_client/usecases/account_usecases.dart';
+import 'package:hw_dashboard_client/repositories/account.dart';
 
-import 'package:hw_dashboard_client/usecases/blog_usecases.dart';
+import 'package:hw_dashboard_client/repositories/blogs.dart';
 
 class App extends StatelessWidget {
   const App({

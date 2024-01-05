@@ -6,9 +6,9 @@ import 'package:hw_dashboard_client/requester/cachers/in_memory.dart';
 
 import 'package:hw_dashboard_client/requester/requester.dart';
 
-import 'package:hw_dashboard_client/usecases/account_usecases.dart';
+import 'package:hw_dashboard_client/repositories/account.dart';
 
-import 'package:hw_dashboard_client/usecases/blog_usecases.dart';
+import 'package:hw_dashboard_client/repositories/blogs.dart';
 
 void main() {
   final requester = Requester(useHTTPS: false, baseURL: 'localhost:8080', cacher: InMemoryCacher());

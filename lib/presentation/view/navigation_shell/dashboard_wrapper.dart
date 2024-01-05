@@ -3,19 +3,17 @@ import 'package:go_router/go_router.dart';
 
 class DashboardWrapper extends StatefulWidget {
   const DashboardWrapper({
-    required this.child,
+    required StatefulNavigationShell navigationShell,
     super.key,
-  });
+  }) : _navigationShell = navigationShell;
 
-  final Widget child;
+  final StatefulNavigationShell _navigationShell;
 
   @override
   State<DashboardWrapper> createState() => _DashboardWrapperState();
 }
 
 class _DashboardWrapperState extends State<DashboardWrapper> {
-  static const destinations = ['clubs', 'leaves', 'courses', 'blogs', 'cards'];
-
   var _selectedIndex = 0;
 
   @override
@@ -50,11 +48,12 @@ class _DashboardWrapperState extends State<DashboardWrapper> {
               label: Text('Cards'),
             ),
           ],
-          onDestinationSelected: (value) {
-            context.goNamed(destinations[value]);
-            setState(() {
-              _selectedIndex = value;
-            });
+          onDestinationSelected: (index) {
+            widget._navigationShell.goBranch(
+              index,
+              initialLocation: index == widget._navigationShell.currentIndex,
+            );
+            _selectedIndex = widget._navigationShell.currentIndex;
           },
           selectedIndex: _selectedIndex,
           trailing: IconButton(
@@ -63,7 +62,7 @@ class _DashboardWrapperState extends State<DashboardWrapper> {
             tooltip: 'Log Out',
           ),
         ),
-        Expanded(child: widget.child),
+        Expanded(child: widget._navigationShell),
       ],
     );
   }

@@ -4,8 +4,8 @@
 
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:hw_dashboard_client/usecases/account_usecases.dart';
-import 'package:hw_dashboard_client/usecases/blog_usecases.dart';
+import 'package:hw_dashboard_client/repositories/account.dart';
+import 'package:hw_dashboard_client/repositories/blogs.dart';
 import 'package:hw_dashboard_domain/hw_dashboard_domain.dart';
 import 'package:meta/meta.dart';
 part 'blogs_event.dart';
@@ -24,11 +24,13 @@ class BlogsBloc extends Bloc<BlogsEvent, BlogsState> {
 
     on<LoadBlogs>(_loadBlogs);
     on<SearchBlogs>(_searchBlogs);
+    on<LoadBlogDetail>(_loadBlogDetail);
     on<DeleteBlog>(_deleteBlog);
     on<CreateBlog>(_createBlog);
   }
 
   // declare repository variables here
+
   final Account account;
   final Blogs blogs;
 
@@ -52,6 +54,12 @@ class BlogsBloc extends Bloc<BlogsEvent, BlogsState> {
     emit(state.copyWith(
       searchedKeyword: event.keyword,
       loadedBlogs: await blogs.searchBlogs(keyword: event.keyword, count: 10),
+    ));
+  }
+
+  FutureOr<void> _loadBlogDetail(LoadBlogDetail event, Emitter<BlogsState> emit) async {
+    emit(state.copyWith(
+      lastViewedBlogDetail: await blogs.getBlogDetail(id: event.id),
     ));
   }
 

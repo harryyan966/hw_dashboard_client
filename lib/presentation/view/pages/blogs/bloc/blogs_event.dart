@@ -13,6 +13,12 @@ final class SearchBlogs extends BlogsEvent {
   final String keyword;
 }
 
+final class LoadBlogDetail extends BlogsEvent {
+  LoadBlogDetail({required this.id});
+
+  final String id;
+}
+
 final class CreateBlog extends BlogsEvent {
   CreateBlog({required this.title, required this.content});
 

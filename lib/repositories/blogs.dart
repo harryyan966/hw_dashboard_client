@@ -22,17 +22,19 @@ class Blogs {
     final blogs = await _requester.requestList(
       path: 'blog/search',
       args: {
-        'title': keyword,
+        'keyword': keyword,
         'limit': count,
       },
     );
     return blogs.map(Blog.fromJson).toList();
   }
 
-  Future<Blog> getBlog({required String id}) async {
+  Future<Blog> getBlogDetail({required String id}) async {
     final blog = await _requester.request(
       path: 'blog/get',
-      args: {'id': id},
+      args: {
+        'id': id,
+      },
     );
     return Blog.fromJson(blog);
   }

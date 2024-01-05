@@ -5,7 +5,7 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hw_dashboard_client/presentation/view/app_constants/spacing.dart';
 import 'package:hw_dashboard_client/presentation/view/app_syntax_sugars/build_context.dart';
-import 'package:hw_dashboard_client/usecases/account_usecases.dart';
+import 'package:hw_dashboard_client/repositories/account.dart';
 import 'package:syntax_sugar/syntax_sugar.dart';
 
 class SignInPage extends StatelessWidget {
