@@ -1,3 +1,5 @@
+// ignore_for_file: require_trailing_commas
+
 import 'dart:convert';
 
 import 'package:hw_dashboard_client/requester/cachers/cacher.dart';
@@ -17,19 +19,16 @@ class Account {
 
   static const _currentUserKey = '__currentUser__';
 
-  Future<Map<String, String>?> login({required String username, required String password}) async {
+  Future<ValidationErrors> login({required String username, required String password}) async {
     try {
-      await _requester.request(
-        path: 'account/login',
-        args: {
-          'username': username,
-          'password': password,
-        },
-      );
-      return null;
+      await _requester.request(path: 'account/login', args: {
+        'username': username,
+        'password': password,
+      });
+      return ValidationErrors.empty();
     } on ValidationException catch (e) {
       print('CAUGHT !!!!!!!!!');
-      return e.errors.asMap;
+      return e.errors;
     }
   }
 
@@ -40,6 +39,8 @@ class Account {
         ? User.fromJson(await _requester.request(path: 'account/current'))
         : User.fromJson(jsonDecode(currentUserRaw) as Json);
 
+    // the user didn't exist
+    // TODO(xiru): set time limit of cache?
     if (currentUserRaw == null) {
       await _cacher.setCache(_currentUserKey, jsonEncode(currentUser));
     }

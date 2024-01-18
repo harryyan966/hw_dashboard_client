@@ -59,9 +59,7 @@ class Requester {
     try {
       // post request
       final raw = await _client.postUri<String>(
-        options: Options(
-          headers: {if (token != null) 'Authorization': 'Bearer $token'},
-        ),
+        options: Options(headers: {if (token != null) 'Authorization': 'Bearer $token'}),
         _useHTTPS ? Uri.https(_baseURL, path) : Uri.http(_baseURL, path),
         data: FormData.fromMap(await _normalizeAppFiles(args)),
       );
@@ -72,7 +70,10 @@ class Requester {
         if (data.has('error')) {
           return Response<Json>(
             requestOptions: raw.requestOptions,
-            data: {'errorType': raw.statusMessage, ...data},
+            data: {
+              'error': data.get<String>('error'),
+              'errorType': data['errorType'] ?? raw.statusMessage,
+            },
           );
         }
         // there is no error
@@ -85,8 +86,8 @@ class Requester {
         return Response<Json>(
           requestOptions: raw.requestOptions,
           data: {
-            'errorType': raw.statusMessage,
             'error': raw.data,
+            'errorType': raw.statusMessage,
           },
         );
       }

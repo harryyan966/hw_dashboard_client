@@ -8,7 +8,7 @@ import 'package:hw_dashboard_client/presentation/view/app_syntax_sugars/build_co
 import 'package:hw_dashboard_client/presentation/view/app_syntax_sugars/click_region.dart';
 import 'package:hw_dashboard_client/presentation/view/pages/blogs/bloc/blogs_bloc.dart';
 import 'package:hw_dashboard_client/presentation/view/pages/blogs/view/create_blogs_page.dart';
-import 'package:hw_dashboard_domain/entities/blog/blog.dart';
+import 'package:hw_dashboard_domain/models/blog/blog.dart';
 
 class AllBlogsPage extends StatelessWidget {
   const AllBlogsPage({super.key});
@@ -17,7 +17,6 @@ class AllBlogsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => BlogsBloc(
-        account: context.read(),
         blogs: context.read(),
       ),
       child: AllBlogsView(),
@@ -128,44 +127,50 @@ class BlogCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClickRegion(
-      onClick: () {
+    return BlocListener<BlogsBloc, BlogsState>(
+      listenWhen: (previous, current) => previous.lastViewedBlogDetail != current.lastViewedBlogDetail && current.lastViewedBlogDetail != null,
+      listener: (context, state) {
         showDialog<void>(
           context: context,
-          builder: (_) => BlogDetailDialog(blog: blog),
+          builder: (_) => BlogDetailDialog(blog: state.lastViewedBlogDetail!),
         );
       },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(Space.space12),
-            child: CachedNetworkImage(
-              width: double.infinity,
-              fit: BoxFit.cover,
-              imageUrl:
-                  'https://img.freepik.com/free-photo/dynamic-portrait-young-man-woman-dancing-hiphop-isolated-black-background-with-mixed-lights-effect_155003-46269.jpg?w=2000&t=st=1703225525~exp=1703226125~hmac=71cbfe4a9bd92e5c9d3cdca963dff1e52446896b1bf74dca7f4c98626f5e2621',
+      child: ClickRegion(
+        onClick: () {
+          context.read<BlogsBloc>().add(LoadBlogDetail(id: blog.id!));
+        },
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(Space.space12),
+              child: CachedNetworkImage(
+                width: double.infinity,
+                fit: BoxFit.cover,
+                imageUrl:
+                    'https://img.freepik.com/free-photo/dynamic-portrait-young-man-woman-dancing-hiphop-isolated-black-background-with-mixed-lights-effect_155003-46269.jpg?w=2000&t=st=1703225525~exp=1703226125~hmac=71cbfe4a9bd92e5c9d3cdca963dff1e52446896b1bf74dca7f4c98626f5e2621',
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(Space.space16),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(blog.title, style: context.text.titleLarge),
-                const SizedBox(height: Space.space08),
-                Text(
-                  blog.content,
-                  style: context.text.bodyMedium,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(Space.space16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(blog.title, style: context.text.titleLarge),
+                  const SizedBox(height: Space.space08),
+                  Text(
+                    blog.content,
+                    style: context.text.bodyMedium,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

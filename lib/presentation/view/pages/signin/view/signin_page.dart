@@ -89,12 +89,13 @@ class _SignInFormState extends State<SignInForm> {
             username: values.get('username'),
             password: values.get('password'),
           );
-      if (errors != null && errors.isNotEmpty) {
-        for (final error in errors.entries) {
+      if (errors.isEmpty) {
+        // will not be required if using bloclistener
+        Future.delayed(Duration.zero, () => context.go('/'));
+      } else {
+        for (final error in errors.asMap.entries) {
           _form.currentState?.fields[error.key]?.invalidate(error.value);
         }
-      } else {
-        Future.delayed(Duration.zero, () => context.go('/'));
       }
     }
   }
