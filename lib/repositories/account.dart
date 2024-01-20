@@ -2,15 +2,12 @@
 
 import 'dart:convert';
 
-import 'package:hw_dashboard_client/requester/cachers/cacher.dart';
-import 'package:hw_dashboard_client/requester/requester.dart';
 import 'package:hw_dashboard_domain/hw_dashboard_domain.dart';
 import 'package:syntax_sugar/syntax_sugar.dart';
 
 class Account {
   Account({
-    required Requester requester,
-    required Cacher cacher,
+    
   })  : _cacher = cacher,
         _requester = requester;
 

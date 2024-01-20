@@ -23,6 +23,8 @@ dependencies:
   meta: ^1.11.0
   shared_preferences: ^2.2.2
 
+  hw_dashboard_core:
+    path: ../hw_dashboard_core
   hw_dashboard_domain:
     path: ../hw_dashboard_domain
   syntax_sugar:

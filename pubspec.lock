@@ -277,6 +277,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "4.0.2"
+  hw_dashboard_core:
+    dependency: "direct main"
+    description:
+      path: "../hw_dashboard_core"
+      relative: true
+    source: path
+    version: "0.1.0+1"
   hw_dashboard_domain:
     dependency: "direct main"
     description:
