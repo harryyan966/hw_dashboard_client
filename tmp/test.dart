@@ -6,9 +6,9 @@ import 'package:hw_dashboard_core/services/id_generator/id.dart';
 
 Future<void> main() async {
   final req = Requester('http://localhost:8080', tokenCacher: TokenCacher());
-  await req.request<void>('/account/login', args: {'username': 'Harry', 'password': '1234567890'});
+  await req.request<void>('/account/login', {'username': 'Harry', 'password': '1234567890'});
   final id =
-      await req.request<Id>('/user/create', args: {'name': 'HarryYanX', 'role': 'student', 'password': 'password'});
+      await req.request<Id>('/user/create', {'name': 'HarryYanX', 'role': 'student', 'password': 'password'});
   print(id);
   // await req.req<void>('/account/logout');
 }

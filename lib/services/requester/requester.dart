@@ -25,7 +25,7 @@ class Requester {
   final TokenCacher tokenCacher;
   final bool printDebugInfo;
 
-  Future<T> request<T>(String path, {Json args = const {}}) async {
+  Future<T> request<T>(String path, [Json args = const {}]) async {
     final token = await tokenCacher.getToken();
     final formData = await _processArguments(args);
     final response = await _postRequest(path, formData, token);
@@ -80,9 +80,11 @@ class Requester {
     final type = response['responseType'] as String;
     final data = response['response'];
     try {
-      if (type == 'authToken') {
-        await tokenCacher.cache(data as String);
-        return null as T;
+      // account data always contain an auth token
+      if (type == 'Account') {
+        final accountData = data as Json;
+        await tokenCacher.cache(accountData.get('authToken'));
+        return Account.fromJson(accountData) as T;
       }
       if (type == 'String') {
         return data as T;

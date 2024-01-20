@@ -2,8 +2,6 @@
 
 import 'package:hw_dashboard_client/bootstrap.dart';
 import 'package:hw_dashboard_client/presentation/app.dart';
-import 'package:hw_dashboard_client/repositories/account.dart';
-import 'package:hw_dashboard_client/repositories/blogs.dart';
 
 
 void main() {
